@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": false,
   "type": "module",
-  "description": "A production-ready Remix blog powered by the ContioReach headless CMS — cached CMS reads with tag-based invalidation, on-demand revalidation webhooks, SEO metadata and JSON-LD.",
+  "description": "Remix v2 headless CMS blog starter — loaders, cached CMS reads with stale-while-revalidate and tag invalidation, a signed publish webhook, CDN cache headers, category archives, JSON-LD and sitemaps. Wired to the ContioReach headless CMS.",
   "license": "MIT",
   "homepage": "https://github.com/contioreach/remix-starter-contioreach#readme",
   "repository": {
@@ -12,15 +12,23 @@
   },
   "keywords": [
     "remix",
+    "remix-run",
     "react",
+    "ssr",
     "headless-cms",
-    "blog",
+    "blog-starter",
+    "loaders",
+    "stale-while-revalidate",
     "on-demand-revalidation",
-    "contioreach",
-    "example",
-    "starter",
+    "seo",
+    "json-ld",
+    "structured-data",
     "tailwindcss",
-    "seo"
+    "contioreach",
+    "cms",
+    "starter-template",
+    "headless cms blog",
+    "remix blog starter"
   ],
   "sideEffects": false,
   "scripts": {
