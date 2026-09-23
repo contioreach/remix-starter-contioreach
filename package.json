@@ -1,0 +1,49 @@
+{
+  "name": "remix-starter-contioreach",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "description": "A production-ready Remix blog powered by the ContioReach headless CMS — cached CMS reads with tag-based invalidation, on-demand revalidation webhooks, SEO metadata and JSON-LD.",
+  "license": "MIT",
+  "homepage": "https://github.com/contioreach/remix-starter-contioreach#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contioreach/remix-starter-contioreach.git"
+  },
+  "keywords": [
+    "remix",
+    "react",
+    "headless-cms",
+    "blog",
+    "on-demand-revalidation",
+    "contioreach",
+    "example",
+    "starter",
+    "tailwindcss",
+    "seo"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "remix vite:dev",
+    "build": "remix vite:build",
+    "start": "remix-serve ./build/server/index.js",
+    "test": "node --test \"app/**/*.test.js\""
+  },
+  "dependencies": {
+    "@remix-run/node": "^2.17.5",
+    "@remix-run/react": "^2.17.5",
+    "@remix-run/serve": "^2.17.5",
+    "isbot": "^5.1.17",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.17.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
