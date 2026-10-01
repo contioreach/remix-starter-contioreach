@@ -28,7 +28,7 @@ export function BlogCard({ post, featured = false, priority = false }) {
         {post.coverImage ? (
           <img
             src={post.coverImage}
-            alt={post.title}
+            alt={post.coverImageAlt || post.title}
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : "auto"}
             decoding="async"

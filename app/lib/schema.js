@@ -36,7 +36,7 @@ export function blogPostingSchema(post, siteUrl) {
       url: siteUrl,
     },
     keywords:
-      [post.primaryKeyword, ...(post.tags?.map((tag) => tag.name) || [])]
+      [post.primaryKeyword, ...(post.secondaryKeywords || []), ...(post.tags?.map((tag) => tag.name) || [])]
         .filter(Boolean)
         .join(", ") || undefined,
   };
