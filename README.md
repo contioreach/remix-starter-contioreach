@@ -5,9 +5,17 @@ A complete, production-shaped blog built with **Remix v2** and a **headless CMS*
 Not a toy. It ships the things a real content site actually needs and most examples skip: cached CMS reads with stale-while-revalidate and real tag invalidation, an on-demand revalidation webhook, category archives, pagination, a table of contents generated from the article body, full SEO metadata, JSON-LD, and a sitemap.
 
 ```bash
+npx create-contioreach-blog my-blog --framework remix
+cd my-blog
+npm run dev
+```
+
+It runs on ContioReach's demo content straight away — [switch to your own posts](#use-your-own-content) whenever you are ready. Or set it up by hand:
+
+```bash
 npx degit contioreach/remix-starter-contioreach my-blog
 cd my-blog && npm install
-cp .env.example .env   # add your API key
+cp .env.example .env   # demo key included
 npm run dev
 ```
 
@@ -21,6 +29,20 @@ This is **Remix v2** (`@remix-run/*` 2.x, React 18) — the stable release, and 
 - **Remix v3** is a separate rewrite, in release candidate at the time of writing.
 
 If you are starting fresh and have no attachment to the Remix name, React Router's framework mode is the more future-proof choice, and nearly everything in this repo transfers to it unchanged.
+
+---
+
+## Use your own content
+
+The starter ships with the read-only key of the ContioReach demo workspace, so it renders real posts the moment you run it — with a banner across the top saying so. The banner shows whenever `CMS_API_KEY` is the demo key, including on a deployed site, and goes away by itself once you switch. Nothing in the code changes.
+
+1. Create a free account at [app.contioreach.com/signup](https://app.contioreach.com/signup?ref=cli&fw=remix).
+2. In the dashboard, open **Developer Settings → API Keys** and copy your key.
+3. Paste it into `.env` as `CMS_API_KEY`, in place of the demo key.
+4. Restart the dev server. The banner disappears and the blog shows your own posts.
+5. Once the site is deployed, open **Developer Settings → Webhook Integration**, enter `https://your-site.com/api/revalidate/all`, click **Generate** and save. Set the same value as `REVALIDATION_SECRET` in your host's environment. Publishing now updates the site without a redeploy.
+
+If ContioReach rejects the key, the banner turns into an "Invalid API key" notice instead — usually a key that was only partly copied.
 
 ---
 
@@ -62,7 +84,7 @@ PUBLIC_SIGNUP_URL=https://app.contioreach.com/signup
 PUBLIC_LOGIN_URL=https://app.contioreach.com/login
 ```
 
-Get `CMS_API_KEY` and `REVALIDATION_SECRET` from your ContioReach workspace settings (the free plan is enough). Every variable is read in one place — [`app/lib/config.server.js`](app/lib/config.server.js) — which throws a named error when one is missing.
+Get `CMS_API_KEY` and `REVALIDATION_SECRET` from your ContioReach workspace settings (the free plan is enough). Every variable is read in one place — [`app/lib/config.server.js`](app/lib/config.server.js) — which throws a named error when one is missing. `REVALIDATION_SECRET` is the one exception to "required": it can stay empty until you set up the webhook, and the webhook rejects every call while it is.
 
 **Remix has no `PUBLIC_` convention and no build-time env inlining for the browser.** That prefix is this repo's own, marking which four values are meant to reach the page. They are read on the server and handed to the client through the **root loader** ([`app/root.jsx`](app/root.jsx)); components read them back with the `useSite()` hook ([`app/lib/site.js`](app/lib/site.js)). The CMS key is never part of that payload.
 

@@ -15,7 +15,9 @@ function required(name) {
 
 export const cmsApiUrl = () => required("CMS_API_URL");
 export const cmsApiKey = () => required("CMS_API_KEY");
-export const revalidationSecret = () => required("REVALIDATION_SECRET");
+/* Optional until you set the webhook up — while it is empty the webhook
+   rejects every call, so the site still runs on a fresh clone. */
+export const revalidationSecret = () => process.env.REVALIDATION_SECRET || "";
 
 /* The public four. Remix has no PUBLIC_ prefix convention and no build-time
    env inlining for the browser, so these are read on the server and handed to

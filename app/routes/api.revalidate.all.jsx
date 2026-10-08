@@ -22,7 +22,9 @@ export async function action({ request }) {
     const body = await request.json().catch(() => ({}));
     const secret = body?.secret || request.headers.get("x-api-key");
 
-    if (secret !== revalidationSecret()) {
+    // An unset secret matches nothing, so the webhook stays shut until it is configured.
+    const expected = revalidationSecret();
+    if (!expected || secret !== expected) {
       return json({ error: "Invalid token" }, { status: 401 });
     }
 

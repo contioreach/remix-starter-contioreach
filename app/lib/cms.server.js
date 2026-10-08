@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, CACHE_TAGS, EMPTY_META, REVALIDATE_TIME } from "~/constants.js";
+import { API_ENDPOINTS, CACHE_TAGS, DEMO_API_KEY, EMPTY_META, REVALIDATE_TIME } from "~/constants.js";
 import { cached } from "./cache.server.js";
 import { cmsApiKey, cmsApiUrl } from "./config.server.js";
 
@@ -185,6 +185,26 @@ export async function loadListing({ page = 1, limit = 12, category } = {}) {
     categoriesResult.status === "fulfilled" ? categoriesResult.value.data || [] : [];
 
   return { posts, meta, categories };
+}
+
+/* What the demo banner needs to know about CMS_API_KEY, and nothing more — the
+   key itself never leaves the server. "demo" while the demo key is set,
+   "invalid" when the CMS rejects the key, otherwise null. A network failure is
+   not the key's fault, so it reads as null too. The probe is cached like any
+   other read, so it is not one extra CMS request per page. */
+export function getApiKeyStatus() {
+  if (cmsApiKey() === DEMO_API_KEY) return Promise.resolve("demo");
+
+  return cached("api-key-status", { maxAge: REVALIDATE_TIME, swr: 0 }, async () => {
+    try {
+      const response = await fetch(`${cmsApiUrl()}${API_ENDPOINTS.CATEGORIES}?limit=1`, {
+        headers: { "Content-Type": "application/json", "X-API-Key": cmsApiKey() },
+      });
+      return response.status === 401 ? "invalid" : null;
+    } catch {
+      return null;
+    }
+  });
 }
 
 /* ---- helpers for the sitemap ---- */

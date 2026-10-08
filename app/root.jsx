@@ -8,8 +8,10 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import { json } from "@remix-run/node";
+import { DemoBanner } from "~/components/layout/DemoBanner";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteHeader } from "~/components/layout/SiteHeader";
+import { getApiKeyStatus } from "~/lib/cms.server";
 import { publicConfig } from "~/lib/config.server";
 import stylesheet from "~/styles/tailwind.css?url";
 
@@ -26,9 +28,10 @@ export const links = () => [
 
 /* Remix does not inline environment variables into the browser bundle, so the
    four public values are read once here and every component reads them back
-   through useSite() (app/lib/site.js). The CMS key is never part of this. */
-export function loader() {
-  return json({ site: publicConfig() });
+   through useSite() (app/lib/site.js). The CMS key is never part of this —
+   the demo banner gets only a status, worked out by getApiKeyStatus(). */
+export async function loader() {
+  return json({ site: publicConfig(), keyStatus: await getApiKeyStatus() });
 }
 
 function Document({ children }) {
@@ -52,6 +55,7 @@ function Document({ children }) {
 export default function App() {
   return (
     <Document>
+      <DemoBanner />
       <SiteHeader />
       <main className="flex-1">
         <Outlet />
